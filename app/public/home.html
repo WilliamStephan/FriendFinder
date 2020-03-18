@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+        integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/reset-min.css"><!-- reset CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"><!-- custom CSS -->
+    <title>Friend Finder Home</title>
+</head>
+
+<body>
+    <!-- site wrapper for boot-camp homework  -->
+    <div class="container">
+        <div class="navbar-container">
+            <a class="navbar-brand logo" href="#">
+                <img src="img/oglogo.png" alt="logo">
+            </a>
+            <ul class="navigation">
+                <li><a id="info" href="#">This</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <!-- Bootcamp homework container  -->
+        <div class="bc-container">
+
+            <div class="bc-header jumbotron shadow-lg text-center">
+                <h1>Friend Finder</h1>
+                <p>This should have been a one page site, but the homework specification required two...</p>
+                <br>
+                <h3>A 10 question survey to find out who you're paired with!</h3>
+                <a class="btn btn-primary" href="/survey" role="button">Survey</a>
+            </div>
+
+        </div>
+        <div class="footer-container">
+            <p>UNIVERSITY OF TEXAS CODING BOOT-CAMP HOMEWORK WRAPPER</p>
+        </div>
+    </div>
+
+    <!-- flexbox only modal - no addon framework -->
+    <div class="modal" role="dialog" aria-labelledby="Modal_Title" aria-describedby="Modal_Description"
+        aria-hidden="true" style="display: none">
+        <div class="modal-content">
+            <button class="close-modal" aria-hidden="true">&#x2715;</button>
+            <h2 id="Modal_Title">Delete Confirmation</h2>
+            <p>Test data!</p>
+            <input type="text" value="first focusable element"><br><br>
+            <button class="close-modal">Close Modal</button>
+        </div>
+    </div>
+
+    <script>
+        // modal vanilla javaScript - CSS Tips and Tricks
+        const FOCUSABLE_SELECTORS = 'a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex], *[contenteditable]';
+        const openModalBtn = document.querySelector('.open-modal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const modal = document.querySelector('.modal');
+        const main = document.querySelector('main');
+
+        function openModal() {
+            modal.style.display = 'flex'; // show the modal
+            modal.querySelector(FOCUSABLE_SELECTORS).focus(); // set focus to first element within modal  
+            const focusableElements = main.querySelectorAll(FOCUSABLE_SELECTORS); // Trap the tab focus by disable tabbing on all elements outside modal. 
+            focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
+            modal.removeAttribute('aria-hidden'); // Trap the screen reader focus as well with aria roles.
+            main.setAttribute('aria-hidden', 'true');
+        }
+
+        function closeModal() {
+            modal.style.display = 'none'; // hide modal
+            const focusableElements = main.querySelectorAll(FOCUSABLE_SELECTORS); // restore elements ability to take focus 
+            focusableElements.forEach(el => el.removeAttribute('tabindex'));
+            modal.setAttribute('aria-hidden', 'true'); // Untrap screen reader focus
+            main.removeAttribute('aria-hidden');
+            openModalBtn.focus(); // restore focus to the triggering element
+        }
+        info.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+
+    </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

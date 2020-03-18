@@ -1,0 +1,160 @@
+html {
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+}
+
+html, body { 
+    height: 100%; 
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-container {
+    flex: 1;
+}
+
+.navbar-container  {
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  align-items: center;
+      background: #BF5700;
+}
+
+.logo {
+  margin: 1.7em 0 0 1.0em;
+  z-index: 1;
+}
+    .logo a {
+      color: #ffffff;
+    }
+    .logo, .navigation {
+        list-style: none;
+        text-transform: uppercase;
+    }
+    .logo a, .navigation a {
+        text-decoration: none;
+        letter-spacing: .45rem;
+    }
+
+.navigation  {
+  display: flex;
+}
+
+.navigation a {
+  height: 50px;
+  display: block;
+  padding: 1em;
+  color: white;
+}
+
+.navigation a:hover {
+    background: #964000;
+}
+
+.bc-header {
+  margin: 1.0em 0 1.0em 0;
+}
+
+.footer-container {
+    justify-content: space-between;
+    align-items: center;
+    color: #ffffff;
+    background: #BF5700;
+    padding: 1em;
+}
+
+.modal {
+    position: fixed;
+    background: rgba(0, 0, 0, .6);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.modal-content {
+    width: 300px;
+    height: 250px;
+    background: white;
+    padding: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* *********** media queries *********** */
+
+@media all and (max-width: 700px) {
+  .flex-container {
+    flex-direction: column;
+  }
+  
+  .navigation  {
+    width: 100%;
+    justify-content: space-around;
+  }
+}
+
+
+/* ****** ****** */
+@media all and (max-width: 600px) {
+ 
+  .logo {
+    margin: .25em 0;
+    align-self: left; /* align the logo to the left side of 'flex-container' */
+}
+  
+  .navigation {
+    flex-direction: column;
+  }
+  
+  .navigation a { 
+    text-align: center; 
+    padding: 10px;
+    border-top: 1px solid rgba(255,255,255,0.3); 
+    border-bottom: 1px solid rgba(0,0,0,0.1); 
+  }
+  
+  .navigation li:last-of-type a {
+    border-bottom: none;
+  }
+}
+

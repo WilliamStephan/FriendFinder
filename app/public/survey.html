@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+        integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/reset-min.css"><!-- reset CSS -->
+    <link rel="stylesheet" type="text/css" href="css/style.css"><!-- custom CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Friend Finder Survey</title>
+</head>
+
+<body>
+    <!-- flexbox site wrapper for boot-camp homework  -->
+    <div class="container">
+        <div class="navbar-container">
+            <a class="navbar-brand logo" href="#">
+                <img src="img/oglogo.png" alt="logo">
+            </a>
+            <ul class="navigation">
+                <li><a id="info" href="#">This</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <!-- Bootcamp homework container  -->
+        <div class="bc-container">
+            <div class="bc-header jumbotron shadow-lg text-center">
+                <h2>Answer these questions to find your match!</h2>
+                <p>Use the slider to adjust your answers.</p>
+                <p>Slide left or right, choosing from STRONGLY DISAGREE to STRONGLY AGREE</p>
+                <p>Use the Submit button when done!</p>
+            </div>
+            <div class="survey-form jumbotron shadow-lg">
+                <input type="text" id="name" name="name" placeholder="Name - required" required>
+                <input type="text" id="photo" name="photo" placeholder="Photo Link - required" required>
+                <button id="submit" class="btn btn-primary btn-block">Submit</button>
+                <form action="/api/friends" method="POST" id="survey">
+                    <div class="form-group">
+
+                    </div>
+                </form>
+            </div>
+            <div class="footer-container">
+                <p>UNIVERSITY OF TEXAS CODING BOOT-CAMP HOMEWORK WRAPPER</p>
+            </div>
+        </div>
+
+        <!-- flexbox only modal - no addon framework -->
+        <div class="modal" role="dialog" aria-labelledby="Modal_Title" aria-describedby="Modal_Description"
+            aria-hidden="true" style="display: none">
+            <div class="modal-content">
+                <button class="close-modal" aria-hidden="true">&#x2715;</button>
+                <h3 id="modal_title"></h3>
+                <p id="modal_text"></p>
+                <img id="modal_img" src="" alt="">
+            </div>
+        </div>
+
+        <script>
+            // GLOBAL VAR **********
+            answerText = ["Highly Disagree", "Disagree", "Neither Agree or Disagree", "Agree", "Highly Agree"]
+            let HTMLout = '<div class="form-group" >'
+            const questions = [
+                "You'd rather meet your great grandparents than meet your great grandchildren?",
+                "You'd rather have more time than more money?",
+                "You really enjoyed the Game of Thrones Series?",
+                "You'd rather be stuck on an elevator than a ski lift?",
+                "You'd rather go to dinner alone than a concert alone?",
+                "You'd rather listen to Pink Floyd than Pink?",
+                "You'd prefer skydiving to bungee jumping?",
+                "You'd rather have world peace than stop world hunger?",
+                "Moss grows fat on a rolling stone?",
+                "You'd rather be able to speak to animals than know all the worlds languages?"
+            ]
+
+            // modal vanilla javaScript - (avoiding Bootstrap conflict with sliders)
+            const closeModalBtn = document.querySelector('.close-modal');
+            const modal = document.querySelector('.modal');
+
+            function openModal(pTitle, pText, pImg) {
+                document.getElementById('modal_title').innerHTML = pTitle;
+                document.getElementById('modal_text').innerHTML = pText;
+                if (pImg !== undefined) {
+                    // document.getElementById('modal_img').src="../template/save.png";
+                    // $("#my_image").attr("src","second.jpg");
+                    document.getElementById('modal_img').src = pImg;
+                }
+                modal.style.display = 'flex'; // show the modal
+            }
+
+            function closeModal() {
+                modal.style.display = 'none'; // hide modal
+                modal.setAttribute('aria-hidden', 'true'); // Untrap screen reader focus
+            }
+
+            // CREATE QUESTION AND SLIDER HTML
+            for (let i = 0; i < questions.length; i++) {
+                HTMLout +=
+                    `<div class="survey-lines" >
+                    <p class="range-slider questions">${questions[i]}</p>
+                    <input type="range" class="range-slider__range" min="0" max="4">
+                    <span id="q${i}">Neither Agree or Disagree</span>`
+                if (i < questions.length - 1) {
+                    HTMLout += "<hr></div>";
+                } else {
+                    HTMLout += "</div>";
+                }
+            }
+            document.getElementById('survey').innerHTML = HTMLout;
+
+            // info.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // submit button
+            $('#submit').on('click', function (event) {
+                event.preventDefault();
+                if (document.getElementById('name').value.length < 1 || document.getElementById('photo').value.length < 4) {
+                    openModal("Incomplete Profile", "Please enter a valid name and photo URL before posting your survey answers.");
+                    return; // error checking for data present in name and photo url fields. 
+                };
+                let newFriend = {
+                    name: document.getElementById('name').value,
+                    photo: document.getElementById('photo').value,
+                    scores: []
+                };
+                for (let i = 0; i < questions.length; i++) {
+                    newFriend.scores[i] = (answerText.indexOf(document.getElementById("q" + i).textContent)) + 1; // HTML slider text back to int score
+                }
+                $.post('/api/friends', newFriend)
+                    .done(function (data) {
+                        console.log('response = ' + JSON.stringify(data));
+                        openModal("Your Match!", data.match, data.image);
+                    });
+            });
+
+            // slider function by Sean Stopnik (codepen)
+            let rangeSlider = function () {
+                let slider = $('.range-slider'),
+                    range = $('.range-slider__range'),
+                    value = $('.range-slider__value');
+                slider.each(function () {
+                    value.each(function () {
+                        let value = $(this).prev().attr('value');
+                        $(this).html(value);
+                    });
+                    range.on('input', function () {
+                        $(this).next(value).html(answerText[this.value]);
+                    });
+                });
+            };
+
+            rangeSlider();
+        </script>
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>
