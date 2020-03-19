@@ -21,7 +21,7 @@ module.exports = function (app) {
             friend.scores.forEach(function (value, index) {
                 deltaTest += Math.abs(parseInt(req.body.scores[index]) - value)
             });
-            if (deltaTest < delta) {
+            if (deltaTest < delta && friend.name != req.body.name) { // best match without same name
                 delta = deltaTest;
                 match = friend.name;
                 image = friend.photo;

@@ -41,7 +41,7 @@ let friendsArr = [
     },
     {
         name: "Bobby Dalbec",
-        photo: "https://www.mlb.com/player/bobby-dalbec-666915?stats=career-r-hitting-minors&year=2019",
+        photo: "https://securea.mlb.com/mlb/images/players/head_shot/666915.jpg",
         scores: [1, 1, 1, 2, 2, 2, 3, 3, 3, 1]
     },
     {

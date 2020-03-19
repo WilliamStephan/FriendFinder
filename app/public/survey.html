@@ -86,8 +86,6 @@
                 document.getElementById('modal_title').innerHTML = pTitle;
                 document.getElementById('modal_text').innerHTML = pText;
                 if (pImg !== undefined) {
-                    // document.getElementById('modal_img').src="../template/save.png";
-                    // $("#my_image").attr("src","second.jpg");
                     document.getElementById('modal_img').src = pImg;
                 }
                 modal.style.display = 'flex'; // show the modal
@@ -95,7 +93,7 @@
 
             function closeModal() {
                 modal.style.display = 'none'; // hide modal
-                modal.setAttribute('aria-hidden', 'true'); // Untrap screen reader focus
+                modal.setAttribute('aria-hidden', 'true'); // release screen reader focus
             }
 
             // CREATE QUESTION AND SLIDER HTML
@@ -135,6 +133,9 @@
                     .done(function (data) {
                         console.log('response = ' + JSON.stringify(data));
                         openModal("Your Match!", data.match, data.image);
+                        setTimeout(() => {
+                            window.location.replace("/");
+                        }, 10000);
                     });
             });
 
